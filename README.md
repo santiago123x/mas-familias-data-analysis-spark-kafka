@@ -137,7 +137,8 @@ mv ~/data/beneficiarios_mfa.csv data/raw/beneficiarios_mfa.csv
 ```
 
 `pip install -e .` makes the `mfa_analytics` package importable by `python3`
-and `spark-submit`. If you prefer not to install it, export
+and `spark-submit`. The small `setup.py` shim keeps editable installs working with the
+pip 22.0 shipped by Ubuntu 22.04 (all metadata stays in `pyproject.toml`). If you prefer not to install it, export
 `PYTHONPATH="$PWD/src"` before running any command.
 
 The VM has 3.8 GB of RAM: stop Hadoop (`stop-all.sh` as `hadoop`) while running
@@ -262,6 +263,7 @@ mas-familias-spark-kafka/
 ├── README.md
 ├── pyproject.toml              # Package metadata, dependencies, pytest and ruff config
 ├── requirements.txt            # Same dependencies for a plain `pip install -r`
+├── setup.py                    # Shim for editable installs with older pip
 ├── data/
 │   ├── README.md               # Source, download steps and column dictionary
 │   ├── raw/                    # Full dataset goes here (git-ignored)
