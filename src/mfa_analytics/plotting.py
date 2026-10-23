@@ -50,7 +50,10 @@ _thousands = FuncFormatter(lambda value, _: f"{value:,.0f}")
 
 def _save(fig: plt.Figure, output_dir: Path, name: str, source_note: str) -> Path:
     """Add the source note, save the figure and release its memory."""
-    fig.text(0.01, 0.01, source_note, fontsize=7, color=MUTED, ha="left", va="bottom")
+    fig.tight_layout()
+    # Placed just below the figure area; bbox_inches="tight" expands the canvas to fit it,
+    # so the note never overlaps the axis labels.
+    fig.text(0.01, -0.01, source_note, fontsize=7, color=MUTED, ha="left", va="top")
     output_dir.mkdir(parents=True, exist_ok=True)
     target = output_dir / f"{name}.png"
     fig.savefig(target, bbox_inches="tight")
