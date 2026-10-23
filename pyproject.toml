@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mas-familias-spark-kafka"
+version = "1.0.0"
+description = "Batch (PySpark) and streaming (Kafka + Spark Structured Streaming) analysis of the Más Familias en Acción beneficiaries dataset."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Santiago Calderon Quintero" }]
+dependencies = [
+    "pyspark==3.5.1",
+    "kafka-python>=2.0.2",
+    "pandas>=1.5",
+    "matplotlib>=3.6",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "ruff>=0.5"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]

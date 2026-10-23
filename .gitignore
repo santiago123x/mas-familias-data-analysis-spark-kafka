@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+
+# Spark / Hadoop artifacts
+spark-warehouse/
+metastore_db/
+derby.log
+checkpoints/
+*.crc
+.ivy2/
+
+# Data: the full dataset is not versioned (735 MB, see data/README.md)
+data/raw/*
+!data/raw/.gitkeep
+
+# Generated outputs (figures in reports/figures ARE versioned)
+outputs/
+
+# Logs, OS and editor files
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
