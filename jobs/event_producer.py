@@ -19,7 +19,7 @@ import time
 from pathlib import Path
 
 from kafka import KafkaProducer
-from kafka.errors import NoBrokersAvailable
+from kafka.errors import KafkaError
 
 from mfa_analytics.config import (
     DEFAULT_KAFKA_BOOTSTRAP_SERVERS,
@@ -133,11 +133,16 @@ def run(args: argparse.Namespace) -> int:
 def main(argv: list[str] | None = None) -> int:
     """CLI entry point. Returns a process exit code."""
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    logging.getLogger("kafka").setLevel(logging.WARNING)  # keep the client's internal logs quiet
     args = parse_args(argv)
     try:
         return run(args)
-    except NoBrokersAvailable:
-        logger.error("No Kafka broker reachable at %s. Is Kafka running?", args.bootstrap_servers)
+    except KafkaError as error:
+        # kafka-python 2.x raises NoBrokersAvailable and 3.x raises KafkaTimeoutError when the
+        # broker is unreachable; both derive from KafkaError.
+        logger.error(
+            "Kafka error (%s). Is the broker running at %s?", error, args.bootstrap_servers
+        )
     except (FileNotFoundError, ValueError) as error:
         logger.error("%s", error)
     return 2
